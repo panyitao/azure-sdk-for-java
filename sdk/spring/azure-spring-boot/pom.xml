@@ -24,7 +24,7 @@
     <jacoco.min.branchcoverage>0.22</jacoco.min.branchcoverage>
   </properties>
 
-  <!-- For Spring Native - maven repositories -->
+  <!-- For Spring Native -->
   <repositories>
     <repository>
       <id>spring-release</id>
@@ -39,17 +39,16 @@
       <url>https://repo.spring.io/release</url>
     </pluginRepository>
   </pluginRepositories>
-  <!-- For Spring Native - maven repositories -->
+  <!-- For Spring Native -->
 
   <dependencies>
-
-    <!-- For Spring Native - spring-native dependency -->
+    <!-- For Spring Native -->
     <dependency>
       <groupId>org.springframework.experimental</groupId>
       <artifactId>spring-native</artifactId>
       <version>0.10.2</version>
     </dependency>
-    <!-- For Spring Native - spring-native dependency -->
+    <!-- For Spring Native -->
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -304,42 +303,6 @@
 
   <build>
     <plugins>
-      <!-- For Spring Native - spring-aot-maven-plugin -->
-      <plugin>
-        <groupId>org.springframework.experimental</groupId>
-        <artifactId>spring-aot-maven-plugin</artifactId>
-        <version>0.10.2</version>
-        <executions>
-          <execution>
-            <id>test-generate</id>
-            <goals>
-              <goal>test-generate</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>generate</id>
-            <goals>
-              <goal>generate</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <!-- For Spring Native - spring-aot-maven-plugin -->
-      <!-- For Spring Native - spring-boot-maven-plugin -->
-      <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-        <configuration>
-          <image>
-            <builder>paketobuildpacks/builder:tiny</builder>
-            <env>
-              <BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>
-            </env>
-          </image>
-        </configuration>
-      </plugin>
-      <!-- For Spring Native - spring-boot-maven-plugin -->
-
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
@@ -400,11 +363,71 @@
   </build>
 
   <profiles>
-    <!-- For Spring Native - native build tools plugin -->
+    <!-- For Spring Native - id: buildpacks -->
     <profile>
-      <id>native</id>
+      <id>buildpacks</id>
       <build>
         <plugins>
+          <plugin>
+            <groupId>org.springframework.experimental</groupId>
+            <artifactId>spring-aot-maven-plugin</artifactId>
+            <version>0.10.2</version>
+            <executions>
+              <execution>
+                <id>test-generate</id>
+                <goals>
+                  <goal>test-generate</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>generate</id>
+                <goals>
+                  <goal>generate</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+
+          <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+            <configuration>
+              <image>
+                <builder>paketobuildpacks/builder:tiny</builder>
+                <env>
+                  <BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>
+                </env>
+              </image>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <!-- For Spring Native -id: native-build-tools -->
+    <profile>
+      <id>native-build-tools</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.springframework.experimental</groupId>
+            <artifactId>spring-aot-maven-plugin</artifactId>
+            <version>0.10.2</version>
+            <executions>
+              <execution>
+                <id>test-generate</id>
+                <goals>
+                  <goal>test-generate</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>generate</id>
+                <goals>
+                  <goal>generate</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+
           <plugin>
             <groupId>org.graalvm.buildtools</groupId>
             <artifactId>native-maven-plugin</artifactId>
@@ -440,7 +463,6 @@
         </plugins>
       </build>
     </profile>
-    <!-- For Spring Native - native build tools plugin -->
 
     <!-- Generate "spring-configuration-metadata.json" by annotation process -->
     <profile>
